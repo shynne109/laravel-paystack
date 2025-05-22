@@ -235,7 +235,7 @@ class Paystack
      */
     private function verifyTransactionAtGateway($transaction_id = null)
     {
-        $transactionRef = $transaction_id ?? request()->query('trxref');
+        $transactionRef = $transaction_id ?: request()->query('trxref');
 
         $relativeUrl = "/transaction/verify/{$transactionRef}";
 
@@ -272,9 +272,9 @@ class Paystack
      * @return json
      * @throws PaymentVerificationFailedException
      */
-    public function getPaymentData()
+    public function getPaymentData($transaction_id = null)
     {
-        if ($this->isTransactionVerificationValid()) {
+        if ($this->isTransactionVerificationValid($transaction_id)) {
             return $this->getResponse();
         } else {
             throw new PaymentVerificationFailedException("Invalid Transaction Reference");
